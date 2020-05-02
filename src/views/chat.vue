@@ -26,67 +26,64 @@
                 </span> </div>
             </div>
           </div>
-          <!-- <div class="inbox_chat">
-            <div class="chat_list active_chat">
-              <div class="chat_people">
-                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>Sulfikardi<span class="chat_date">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions
-                    astrology under one roof.</p>
-                </div>
-              </div>
-              <div class="chat_people">
-                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>Sulfikardi<span class="chat_date">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions
-                    astrology under one roof.</p>
-                </div>
-              </div>
-            </div>
-          </div> -->
           <div class="chat-contact">
-            <div class="list-friends">
-              <div class="private">
+            <div class="list-friends" v-for="contact in this.profil" :key="contact.id">
+              <div class="private" @click="cobaCoba" v-if="contact.email !== authUser.email">
                 <div class="private-image">
-                  <img src="https://ptetutorials.com/images/user-profile.png" alt="">
+                  <img :src="contact.imageProfil" alt="">
                 </div>
                 <div class="firends-name">
-                  <h5>Sulfikardi</h5>
-                    <p>Online</p>
-                 </div>
-              </div>
-              <div class="private">
-                <div class="private-image">
-                  <img src="https://ptetutorials.com/images/user-profile.png" alt="">
-                </div>
-                <div class="firends-name">
-                  <h5>Sulfikardi</h5>
-                    <p>Online</p>
+                  <h5>{{contact.displayName}}</h5>
+                    <p>{{contact.email}}</p>
                  </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="chat-empty">
-          <h1>Please select a chat to start messaging</h1>
-        </div>
-        <div class="mesgs">
-          <div class="msg_history">
-            <div class="incoming_msg" >
-              <div :class="[chat.author === authUser.email? 'received_msg': 'sent_msg']" v-for="chat in messages" :key="chat.id">
-                <div class="received_withd_msg" >
+        <div class="messages">
+          <div class="contact-name">
+            <div class="listimage">
+              <img :src="bannerName.imageProfil" alt="" >
+            </div>
+            <div class="listname">
+              <h3>{{bannerName.displayName}}</h3>
+            </div>
+          </div>
+          <div class="chat-empty full">
+            <h1>Please select a chat to start messaging</h1>
+          </div>
+          <div class="mesgs">
+            <div class="msg_history">
+              <div class="incoming_msg" >
+                <div class="received_msg" v-for="chat in messages" :key="chat.id">
+                <div :class="[chat.sender === authUser.email? 'received_msg': 'sent_msg']" >
                   <p>{{chat.message}}</p>
                   </div>
               </div>
             </div>
-          </div>
-          <div class="type_msg">
-            <div class="input_msg_write">
-              <input type="text" class="write_msg" placeholder="Type a message" v-model="message"/>
-              <button class="msg_send_btn" type="button" @click="sendMessage"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
             </div>
+              <div class="type_msg">
+              <div class="input_msg_write">
+                <input type="text" class="write_msg" placeholder="Type a message" v-model="message"/>
+                <button class="msg_send_btn" type="button" @click="sendMessage"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+              </div>
+          </div>
+          <!-- <div class="mesgs">
+            <div class="msg_history">
+              <div class="incoming_msg" >
+                <div class="received_msg" v-for="chat in personalChat" :key="chat.id">
+                <div :class="[chat.sender === authUser.email? 'received_msg': 'sent_msg']" >
+                  <p>{{chat.message}}</p>
+                  </div>
+              </div>
+            </div>
+            </div>
+              <div class="type_msg">
+              <div class="input_msg_write">
+                <input type="text" class="write_msg" placeholder="Type a message" v-model="message"/>
+                <button class="msg_send_btn" type="button" @click="sendMessage"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+              </div>
+          </div> -->
           </div>
         </div>
       </div>
@@ -106,20 +103,24 @@ export default {
       message: null,
       messages: [],
       authUser: {},
-      profil: []
+      profil: [],
+      myContact: '',
+      bannerName: [],
+      personalChat: []
     }
   },
   methods: {
     sendMessage () {
       db.collection('chat').add({
         message: this.message,
-        author: this.authUser.email,
+        sender: this.authUser.email,
+        received: this.bannerName.email,
         createdAt: new Date()
       })
       this.message = null
     },
     showMessage () {
-      db.collection('chat').where('author', '==', this.authUser.email).orderBy('createdAt').onSnapshot((querySnapshot) => {
+      db.collection('chat').where('received', '==', this.authUser.email).where('sender', '==', this.bannerName.email).orderBy('createdAt').onSnapshot((querySnapshot) => {
         var allMessage = []
         querySnapshot.forEach(doc => {
           allMessage.push(doc.data())
@@ -138,15 +139,39 @@ export default {
         querySnapshot.forEach(doc => {
           this.profil.push(doc.data())
         })
-        console.log(this.profil)
       })
+    },
+    cobaCoba (e) {
+      const empty = document.querySelector('.chat-empty')
+      const chat = document.querySelector('.mesgs')
+      empty.classList.add('full')
+      chat.classList.toggle('full')
+      this.myContact = e.target.textContent
+      this.bannerContact()
+      this.showMessage()
+    },
+    bannerContact () {
+      for (let i = 0; i < this.profil.length; i++) {
+        if (this.profil[i].displayName === this.myContact) {
+          this.bannerName = this.profil[i]
+        }
+      }
+      // this.chatPersonal()
+    },
+    chatPersonal () {
+      for (let i = 0; i < this.messages.length; i++) {
+        if (this.messages[i].sender === this.authUser.email && this.messages[i].received === this.bannerName.email) {
+          this.personalChat.push(this.messages[i])
+          console.log(this.personalChat)
+        }
+      }
     }
   },
   created () {
     if (firebase.auth().currentUser) {
       this.authUser = firebase.auth().currentUser
     }
-    this.showMessage()
+    // this.showMessage()
     this.getUser()
   }
 }
@@ -170,7 +195,7 @@ export default {
       width: 40%; border-right:1px solid #c4c4c4;
     }
     .chat-contact{
-      height: 550px;
+      height: 600px;
       background-color: #fff;
       overflow-y: scroll;
     }
@@ -198,6 +223,27 @@ export default {
     .firends-name{
       margin-left: 30px;
       margin-top: 19px;
+    }
+    .messages{
+      display: flex;
+      flex-direction: column;
+    }
+    .contact-name{
+      display: flex;
+      align-items: center;
+      width: 100%;
+      /* height: 20px; */
+      padding-top: 5px;
+      padding-bottom: 5px;
+      background-color: #fff;
+    }
+    .contact-name img{
+      width: 50px;
+      margin-left: 30px;
+      /* padding-bottom: 10px; */
+    }
+    .listname h3{
+      margin-left: 50px;
     }
     .chat-empty{
       position: absolute;
