@@ -1,13 +1,22 @@
 <template>
   <div>
+    <div class="luar">
     <div class="container">
-      <img src="../assets/image/chatMee1.png" alt="" width="130" class="chatmee">
+      <!-- <img src="../assets/image/chatMee1.png" alt="" width="130" class="chatmee"> -->
+      <h1 class="title">chatMee</h1>
       <div class="messaging">
       <div class="inbox_msg">
         <div class="inbox_people">
           <div class="headind_srch">
             <div class="recent_heading">
-              <img src="../assets/image/menu.svg" alt="" width="25">
+              <div class="dropdown">
+               <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../assets/image/menu.svg" alt="" width="25"></button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">Profil</a>
+                  <a class="dropdown-item" href="#">About</a>
+                  <a class="dropdown-item" href="#" @click="logout">Logout</a>
+                </div>
+              </div>
             </div>
             <div class="srch_bar">
               <div class="stylish-input-group">
@@ -17,7 +26,7 @@
                 </span> </div>
             </div>
           </div>
-          <div class="inbox_chat">
+          <!-- <div class="inbox_chat">
             <div class="chat_list active_chat">
               <div class="chat_people">
                 <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
@@ -27,43 +36,51 @@
                     astrology under one roof.</p>
                 </div>
               </div>
+              <div class="chat_people">
+                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                <div class="chat_ib">
+                  <h5>Sulfikardi<span class="chat_date">Dec 25</span></h5>
+                  <p>Test, which is a new approach to have all solutions
+                    astrology under one roof.</p>
+                </div>
+              </div>
+            </div>
+          </div> -->
+          <div class="chat-contact">
+            <div class="list-friends">
+              <div class="private">
+                <div class="private-image">
+                  <img src="https://ptetutorials.com/images/user-profile.png" alt="">
+                </div>
+                <div class="firends-name">
+                  <h5>Sulfikardi</h5>
+                    <p>Online</p>
+                 </div>
+              </div>
+              <div class="private">
+                <div class="private-image">
+                  <img src="https://ptetutorials.com/images/user-profile.png" alt="">
+                </div>
+                <div class="firends-name">
+                  <h5>Sulfikardi</h5>
+                    <p>Online</p>
+                 </div>
+              </div>
             </div>
           </div>
         </div>
+        <div class="chat-empty">
+          <h1>Please select a chat to start messaging</h1>
+        </div>
         <div class="mesgs">
           <div class="msg_history">
-            <div class="incoming_msg">
-              <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-              <div class="received_msg">
-                <div class="received_withd_msg" v-for="chat in messages" :key="chat.id">
+            <div class="incoming_msg" >
+              <div :class="[chat.author === authUser.email? 'received_msg': 'sent_msg']" v-for="chat in messages" :key="chat.id">
+                <div class="received_withd_msg" >
                   <p>{{chat.message}}</p>
-                  <span class="time_date">{{chat.author}} 11:01 AM    |    June 9</span></div>
+                  </div>
               </div>
             </div>
-            <!-- <div class="outgoing_msg">
-              <div class="sent_msg">
-                <p>Test which is a new approach to have all
-                  solutions</p>
-                <span class="time_date"> 11:01 AM    |    June 9</span> </div>
-            </div> -->
-            <!-- <div class="incoming_msg">
-              <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-              <div class="received_msg">
-                <div class="received_withd_msg">
-                  <p>Test, which is a new approach to have</p>
-                  <span class="time_date"> 11:01 AM    |    Yesterday</span></div>
-              </div>
-            </div>
-            <div class="incoming_msg">
-              <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-              <div class="received_msg">
-                <div class="received_withd_msg">
-                  <p>We work directly with our designers and suppliers,
-                    and sell direct to you, which means quality, exclusive
-                    products, at a price anyone can afford.</p>
-                  <span class="time_date"> 11:01 AM    |    Today</span></div>
-              </div>
-            </div> -->
           </div>
           <div class="type_msg">
             <div class="input_msg_write">
@@ -71,10 +88,10 @@
               <button class="msg_send_btn" type="button" @click="sendMessage"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
             </div>
           </div>
-          <button type="button" @click="logout">Logout</button>
         </div>
       </div>
       </div>
+    </div>
     </div>
   </div>
 </template>
@@ -88,7 +105,8 @@ export default {
     return {
       message: null,
       messages: [],
-      authUser: {}
+      authUser: {},
+      profil: []
     }
   },
   methods: {
@@ -101,7 +119,7 @@ export default {
       this.message = null
     },
     showMessage () {
-      db.collection('chat').orderBy('createdAt').onSnapshot((querySnapshot) => {
+      db.collection('chat').where('author', '==', this.authUser.email).orderBy('createdAt').onSnapshot((querySnapshot) => {
         var allMessage = []
         querySnapshot.forEach(doc => {
           allMessage.push(doc.data())
@@ -114,31 +132,89 @@ export default {
         .then(() => {
           this.$router.go({ path: this.$router.path })
         })
+    },
+    getUser () {
+      db.collection('users').onSnapshot((querySnapshot) => {
+        querySnapshot.forEach(doc => {
+          this.profil.push(doc.data())
+        })
+        console.log(this.profil)
+      })
     }
   },
   created () {
     if (firebase.auth().currentUser) {
       this.authUser = firebase.auth().currentUser
-      console.log(this.authUser)
     }
     this.showMessage()
+    this.getUser()
   }
 }
 </script>
 
 <style scoped>
+.luar{
+  background-color: #5580a3;
+}
     .container{max-width:1170px; margin:auto;}
     img{ max-width:100%;}
+    .title{
+      padding-top: 10px;
+      padding-bottom: 10px;
+      color: #fff;
+    }
     .inbox_people {
       background: #f8f8f8 none repeat scroll 0 0;
       float: left;
-      overflow: hidden;
+      /* overflow: hidden; */
       width: 40%; border-right:1px solid #c4c4c4;
+    }
+    .chat-contact{
+      height: 550px;
+      background-color: #fff;
+      overflow-y: scroll;
+    }
+    /* .list-friends{
+      overflow-y: scroll;
+    } */
+    .private{
+      height: 85px;
+      background-color:#fff;
+      display: flex;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .private:hover{
+      background-color: #c4c4c4;
+    }
+    .full{
+      display: none;
+    }
+    .private-image img{
+      width: 70px;
+      margin-top: 6px;
+      margin-left: 10px;
+    }
+    .firends-name{
+      margin-left: 30px;
+      margin-top: 19px;
+    }
+    .chat-empty{
+      position: absolute;
+      top: 45%;
+      left: 60%;
+      width: 210px;
+    }
+    .chat-empty h1{
+      font-size: 20px;
+      text-align: center;
+      color: #ccc;
     }
     .inbox_msg {
       border: 1px solid #c4c4c4;
       clear: both;
       overflow: hidden;
+      position: relative;
     }
     .top_spac{ margin: 20px 0 0;}
     .recent_heading {float: left; width:40%;}
@@ -147,13 +223,23 @@ export default {
       text-align: right;
       width: 60%;
     }
-    .headind_srch{ padding:10px 29px 10px 20px; overflow:hidden; border-bottom:1px solid #c4c4c4;}
+    .headind_srch{
+      padding:10px 29px 10px 20px;
+      margin-bottom: 5px;
+      /* overflow:hidden; */
+      border-bottom:1px solid #c4c4c4;
+    }
     .recent_heading h4 {
       color: #05728f;
       font-size: 21px;
       margin: auto;
     }
-    .srch_bar input{ border:1px solid #cdcdcd; border-width:0 0 1px 0; width:80%; padding:2px 0 4px 6px; background:none;}
+    .srch_bar input{
+      border:1px solid #cdcdcd;
+      border-width:0 0 1px 0; width:80%;
+      padding:2px 0 4px 6px;
+      background:none;
+    }
     .srch_bar .input-group-addon button {
       background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
       border: medium none;
@@ -176,13 +262,24 @@ export default {
       width: 88%;
     }
 
-    .chat_people{ overflow:hidden; clear:both;}
+    .chat_people{
+      overflow:hidden;
+      clear:both;
+      padding-bottom: 30px;
+      cursor: pointer;
+    }
+    .chat_people:hover{
+      background-color: #fff;
+    }
     .chat_list {
       border-bottom: 1px solid #c4c4c4;
       margin: 0;
       padding: 18px 16px 10px;
     }
-    .inbox_chat { height: 550px; overflow-y: scroll;}
+    .inbox_chat {
+      height: 550px;
+      overflow-y: scroll;
+    }
 
     .active_chat{ background:#ebebeb;}
 
@@ -201,9 +298,12 @@ export default {
       border-radius: 3px;
       color: #646464;
       font-size: 14px;
-      margin: 0;
+      /* margin-bottom: 15px; */
       padding: 5px 10px 5px 12px;
       width: 100%;
+      /* height: 40px; */
+      /* line-height: 25px; */
+      border-radius: 10px;
     }
     .time_date {
       color: #747474;
@@ -217,14 +317,17 @@ export default {
       padding: 30px 15px 0 25px;
       width: 60%;
     }
-
     .sent_msg p {
       background: #05728f none repeat scroll 0 0;
       border-radius: 3px;
       font-size: 14px;
-      margin: 0; color:#fff;
+      /* margin-bottom: 15px; */
+      color:#fff;
       padding: 5px 10px 5px 12px;
+      border-radius: 10px;
+      /* line-height: 25px; */
       width:100%;
+      /* height: 40px; */
     }
     .outgoing_msg{ overflow:hidden; margin:26px 0 26px;}
     .sent_msg {

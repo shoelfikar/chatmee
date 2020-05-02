@@ -1,7 +1,7 @@
 .DS_Store
 node_modules
 /dist
-firebase.js
+assets/
 
 # local env files
 .env.local
@@ -20,3 +20,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+# file local
+firebase.js
+firebaseInit.js

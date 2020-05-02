@@ -46,13 +46,15 @@
 </template>
 <script>
 import firebase from 'firebase'
+
 export default {
   name: 'Register',
   data () {
     return {
       email: '',
       password: '',
-      displayName: ''
+      displayName: '',
+      imageProfil: 'https://firebasestorage.googleapis.com/v0/b/chatmee-3a979.appspot.com/o/profil%2Fuser-profile.png?alt=media&token=54d73fa0-5b19-499f-9032-b659df1d10d1'
     }
   },
   methods: {
@@ -62,8 +64,11 @@ export default {
         .then(user => {
           firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid)
             .set({
+              id: firebase.auth().currentUser.uid,
               email: this.email,
-              displayName: this.displayName
+              displayName: this.displayName,
+              imageProfil: this.imageProfil,
+              phoneNumber: 0
             })
             // ensure we catch any errors at this stage to advise us if something does go wrong
             .catch(error => {
@@ -77,9 +82,6 @@ export default {
         }
         )
     }
-    // profilUser () {
-
-    // }
   }
 
 }
