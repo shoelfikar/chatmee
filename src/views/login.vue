@@ -51,6 +51,10 @@ export default {
       e.preventDefault()
       firebase.auth().signInWithEmailAndPassword(this.email, this.password)
         .then(user => {
+          firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid)
+            .update({
+              status: true
+            })
           alert(`Success Login With email ${this.email}`)
           this.$router.push('/chat')
         },

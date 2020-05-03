@@ -1,38 +1,27 @@
 <template>
   <div>
-    <div class="profil hide">
+    <div class="friendsinfo hide">
       <div class="main-profil">
         <div class="close">
           <a href="#" @click="closeModal">X</a>
         </div>
         <div class="head-profil">
-          <div class="photo" v-if="picture == null">
-            <img :src="whois[0].imageProfil" alt="">
-            <progress id="progress" :value="uploadValue" max="100" v-if="uploadValue !== 0"></progress>
-          </div>
-          <div class="photo" v-else>
-            <img :src="picture" alt="">
+          <div class="photo">
+            <img :src="friends.imageProfil" alt="">
           </div>
           <div class="nama">
-            <h5>{{whois[0].displayName}}</h5>
-            <p>{{whois[0].email}}</p>
+            <h5>{{friends.displayName}}</h5>
+            <p>online</p>
           </div>
         </div>
         <div class="body-profil">
           <div class="phone">
             <img src="../assets/image/phone.png" alt="">
-            <input type="text" :value="whois[0].phoneNumber">
-            <!-- <p>+6282386927889</p> -->
+            <p>{{friends.phoneNumber}}</p>
           </div>
           <div class="location">
             <img src="../assets/image/location.png" alt="">
             <input type="text" value="このはがくれ">
-          </div>
-        </div>
-        <div class="upload-image">
-          <div class="upload-btn-wrapper">
-            <button class="btn"><img src="../assets/image/upload.png" alt="" width="35"></button>
-            <input type="file" name="myfile"  @change="onUpload()"/>
           </div>
         </div>
       </div>
@@ -46,7 +35,7 @@
 
 export default {
   name: 'FriendsInfo',
-  // props: ['myName'],
+  props: ['friends'],
   data () {
     return {
       uploadValue: 0,
@@ -60,7 +49,7 @@ export default {
   },
   methods: {
     closeModal () {
-      const closeMdl = document.querySelector('.profil')
+      const closeMdl = document.querySelector('.friendsinfo')
       closeMdl.classList.add('hide')
     }
   },
@@ -70,21 +59,19 @@ export default {
         this.coordinates = coordinates
       })
       .catch(error => alert(error))
-    this.cariProfil()
   }
 
 }
 </script>
 
 <style scoped>
-  .profil{
+  .friendsinfo{
     position: fixed;
     top: 0;
     bottom: 0;
     right: 0;
     left: 0;
     background-color: rgba(0, 0, 0, .50);
-    /* display: none; */
   }
   .main-profil{
     width: 370px;
@@ -117,7 +104,6 @@ export default {
     position: absolute;
     top: 40px;
     left: 7px;
-    /* border-radius: 1px; */
   }
   .photo{
     margin-left: 20px;
@@ -133,9 +119,6 @@ export default {
   .nama{
     margin-left: 10px;
   }
-  /* .upload-profil{
-    display: none;
-  } */
   .upload-btn-wrapper {
   position: relative;
   overflow: hidden;
@@ -152,7 +135,6 @@ export default {
   margin-left: 30px;
   display: flex;
   align-items: center;
-  /* background-color: blueviolet; */
   border-bottom: 1px solid #ccc;
 }
 .phone img, .location img{

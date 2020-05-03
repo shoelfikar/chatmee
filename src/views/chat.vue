@@ -34,7 +34,10 @@
                 </div>
                 <div class="firends-name">
                   <h5>{{contact.displayName}}</h5>
-                    <p>{{contact.email}}</p>
+                    <div class="noline">
+                      <p v-if="!contact.status">ofline</p>
+                      <p v-else>online</p>
+                    </div>
                  </div>
               </div>
             </div>
@@ -44,7 +47,7 @@
             <h1>Please select a chat to start messaging</h1>
         </div>
         <div class="messages">
-          <div class="contact-name">
+          <div class="contact-name" @click="friendsInfo">
             <div class="listimage">
               <img :src="bannerName.imageProfil" alt="" >
             </div>
@@ -76,6 +79,7 @@
       </div>
     </div>
     <Profil />
+    <FriendsInfo v-bind:friends="bannerName"/>
   </div>
 </template>
 
@@ -83,11 +87,13 @@
 import firebase from 'firebase'
 import db from '../firebaseInit'
 import Profil from '../components/Profil'
+import FriendsInfo from '../components/FriendsInfo'
 
 export default {
   name: 'chat',
   components: {
-    Profil
+    Profil,
+    FriendsInfo
   },
   data () {
     return {
@@ -98,7 +104,8 @@ export default {
       profil: [],
       myContact: '',
       bannerName: [],
-      personalChat: []
+      personalChat: [],
+      logoutUser: firebase.auth().currentUser.uid
     }
   },
   methods: {
@@ -131,15 +138,21 @@ export default {
     },
     logout () {
       firebase.auth().signOut()
+      firebase.firestore().collection('users').doc(this.logoutUser)
+        .update({
+          status: false
+        })
         .then(() => {
           this.$router.go({ path: this.$router.path })
         })
     },
     getUser () {
       db.collection('users').onSnapshot((querySnapshot) => {
+        var profilOne = []
         querySnapshot.forEach(doc => {
-          this.profil.push(doc.data())
+          profilOne.push(doc.data())
         })
+        this.profil = profilOne
       })
     },
     cobaCoba (e) {
@@ -175,6 +188,10 @@ export default {
           console.log(this.personalChat)
         }
       }
+    },
+    friendsInfo () {
+      const friends = document.querySelector('.friendsinfo')
+      friends.classList.toggle('hide')
     }
   },
   created () {
@@ -188,9 +205,9 @@ export default {
 </script>
 
 <style scoped>
-.luar{
-  background-color: #5580a3;
-}
+    .luar{
+      background-color: #5580a3;
+    }
     .container{max-width:1170px; margin:auto;}
     img{ max-width:100%;}
     .title{
@@ -209,11 +226,8 @@ export default {
       background-color: #fff;
       overflow-y: scroll;
     }
-    /* .list-friends{
-      overflow-y: scroll;
-    } */
     .private{
-      height: 85px;
+      height: 100px;
       background-color:#fff;
       display: flex;
       margin-top: 10px;
@@ -226,9 +240,12 @@ export default {
       display: none;
     }
     .private-image img{
-      width: 70px;
+      width: 90px;
+      height: 90px;
       margin-top: 6px;
+      /* margin-bottom: 10px; */
       margin-left: 10px;
+      border-radius: 50%;
     }
     .firends-name{
       margin-left: 30px;
@@ -245,10 +262,10 @@ export default {
       display: flex;
       align-items: center;
       width: 100%;
-      /* height: 20px; */
       padding-top: 5px;
       padding-bottom: 5px;
       background-color: #fff;
+      cursor: pointer;
     }
     .contact-name img{
       width: 50px;

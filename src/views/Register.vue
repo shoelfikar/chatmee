@@ -64,11 +64,12 @@ export default {
         .then(user => {
           firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid)
             .set({
-              id: firebase.auth().currentUser.uid,
+              // id: firebase.auth().currentUser.uid,
               email: this.email,
               displayName: this.displayName,
               imageProfil: this.imageProfil,
-              phoneNumber: 0
+              phoneNumber: '+6200-000-000-00',
+              status: true
             })
             // ensure we catch any errors at this stage to advise us if something does go wrong
             .catch(error => {

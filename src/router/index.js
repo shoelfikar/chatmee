@@ -5,7 +5,7 @@ import Login from '../views/login.vue'
 import Register from '../views/Register.vue'
 import Chatroom from '../views/Chatroom.vue'
 import Chat from '../views/chat.vue'
-import Profil from '../components/Profil.vue'
+// import FriendsInfo from '../components/FriendsInfo.vue'
 import firebase from 'firebase'
 
 Vue.use(VueRouter)
@@ -45,11 +45,11 @@ const routes = [
       requiresAuth: true
     }
   },
-  {
-    path: '/profil',
-    name: 'Profil',
-    component: Profil
-  },
+  // {
+  //   path: '/friends',
+  //   name: 'FriendsInfo',
+  //   component: FriendsInfo
+  // },
   {
     path: '/about',
     name: 'About',

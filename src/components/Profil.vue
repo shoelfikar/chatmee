@@ -46,7 +46,6 @@ import db from '../firebaseInit'
 
 export default {
   name: 'Profil',
-  // props: ['myName'],
   data () {
     return {
       uploadValue: 0,
@@ -77,6 +76,10 @@ export default {
         this.uploadValue = 100
         storageRef.snapshot.ref.getDownloadURL().then((url) => {
           this.picture = url
+          firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid)
+            .update({
+              imageProfil: url
+            })
         })
       }
       )
