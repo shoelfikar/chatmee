@@ -14,7 +14,8 @@
             <img :src="picture" alt="">
           </div>
           <div class="nama">
-            <h5>{{whois[0].displayName}}</h5>
+            <!-- <h5>{{whois[0].displayName}}</h5> -->
+            <input type="text" v-model="whois[0].displayName" @keyup.enter="updateProfil">
             <p>{{whois[0].email}}</p>
           </div>
         </div>
@@ -22,7 +23,6 @@
           <div class="phone">
             <img src="../assets/image/phone.png" alt="">
             <input type="text" :value="whois[0].phoneNumber">
-            <!-- <p>+6282386927889</p> -->
           </div>
           <div class="location">
             <img src="../assets/image/location.png" alt="">
@@ -48,6 +48,8 @@ export default {
   name: 'Profil',
   data () {
     return {
+      myName: '',
+      myPhone: '',
       uploadValue: 0,
       picture: null,
       imageData: null,
@@ -96,6 +98,12 @@ export default {
         })
         this.whois = satu
       })
+    },
+    updateProfil () {
+      firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid)
+        .update({
+          displayName: this.whois[0].displayName
+        })
     }
   },
   created () {
@@ -167,9 +175,19 @@ export default {
   .nama{
     margin-left: 10px;
   }
-  /* .upload-profil{
-    display: none;
-  } */
+  .nama input{
+    margin-top: 5px;
+    font-size: 25px;
+    width: 230px;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    background-color: #5580a3;
+  }
+  .nama p{
+    color: #fff;
+    font-weight: bold;
+  }
   .upload-btn-wrapper {
   position: relative;
   overflow: hidden;

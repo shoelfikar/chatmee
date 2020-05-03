@@ -11,7 +11,7 @@
           </div>
           <div class="nama">
             <h5>{{friends.displayName}}</h5>
-            <p>online</p>
+            <p>{{friends.email}}</p>
           </div>
         </div>
         <div class="body-profil">

@@ -275,6 +275,11 @@ export default {
     .listname h3{
       margin-left: 50px;
     }
+    .listimage img{
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+    }
     .chat-empty{
       position: absolute;
       top: 45%;
