@@ -41,11 +41,11 @@
 </template>
 
 <script>
-import firebase from 'firebase'
-import db from '../firebaseInit'
+// import firebase from 'firebase'
+// import db from '../firebaseInit'
 
 export default {
-  name: 'Profil',
+  name: 'FriendsInfo',
   // props: ['myName'],
   data () {
     return {
@@ -55,44 +55,13 @@ export default {
       coordinates: {
         lat: 0,
         lng: 0
-      },
-      whois: [],
-      siapa: firebase.auth().currentUser.email
+      }
     }
   },
   methods: {
-    previewImage (event) {
-      this.uploadValue = 0
-      this.picture = null
-      this.imageData = event.target.files[0]
-    },
-    onUpload () {
-      this.imageData = event.target.files[0]
-      this.picture = null
-      const storageRef = firebase.storage().ref(`profil/${this.imageData.name}`).put(this.imageData)
-      storageRef.on('state_changed', snapshot => {
-        this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-      }, error => { console.log(error.message) },
-      () => {
-        this.uploadValue = 100
-        storageRef.snapshot.ref.getDownloadURL().then((url) => {
-          this.picture = url
-        })
-      }
-      )
-    },
     closeModal () {
       const closeMdl = document.querySelector('.profil')
       closeMdl.classList.add('hide')
-    },
-    cariProfil () {
-      db.collection('users').where('email', '==', this.siapa).onSnapshot((querySnapshot) => {
-        var satu = []
-        querySnapshot.forEach(doc => {
-          satu.push(doc.data())
-        })
-        this.whois = satu
-      })
     }
   },
   created () {

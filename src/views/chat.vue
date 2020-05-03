@@ -12,7 +12,7 @@
               <div class="dropdown">
                <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../assets/image/menu.svg" alt="" width="25"></button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="#">Profil</a>
+                  <a class="dropdown-item" href="#" @click="openModal">Profil</a>
                   <a class="dropdown-item" href="#">About</a>
                   <a class="dropdown-item" href="#" @click="logout">Logout</a>
                 </div>
@@ -40,6 +40,9 @@
             </div>
           </div>
         </div>
+        <div class="chat-empty">
+            <h1>Please select a chat to start messaging</h1>
+        </div>
         <div class="messages">
           <div class="contact-name">
             <div class="listimage">
@@ -49,59 +52,48 @@
               <h3>{{bannerName.displayName}}</h3>
             </div>
           </div>
-          <div class="chat-empty full">
-            <h1>Please select a chat to start messaging</h1>
-          </div>
-          <div class="mesgs">
-            <div class="msg_history">
-              <div class="incoming_msg" >
-                <div class="received_msg" v-for="chat in messages" :key="chat.id">
-                <div :class="[chat.sender === authUser.email? 'received_msg': 'sent_msg']" >
-                  <p>{{chat.message}}</p>
+          <div class="mesgs full">
+              <div class="incoming_msg">
+                <div class="received_msg" >
+                  <div class="sent_msg" v-for="chat in messages" :key="chat.id">
+                    <p>{{chat.message}}</p>
                   </div>
-              </div>
-            </div>
-            </div>
-              <div class="type_msg">
-              <div class="input_msg_write">
-                <input type="text" class="write_msg" placeholder="Type a message" v-model="message"/>
-                <button class="msg_send_btn" type="button" @click="sendMessage"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-              </div>
-          </div>
-          <!-- <div class="mesgs">
-            <div class="msg_history">
-              <div class="incoming_msg" >
-                <div class="received_msg" v-for="chat in personalChat" :key="chat.id">
-                <div :class="[chat.sender === authUser.email? 'received_msg': 'sent_msg']" >
-                  <p>{{chat.message}}</p>
+                  <div class="received_withd_msg" v-for="chat in senderSend" :key="chat.id" >
+                    <p>{{chat.message}}</p>
                   </div>
+                </div>
               </div>
             </div>
-            </div>
-              <div class="type_msg">
-              <div class="input_msg_write">
-                <input type="text" class="write_msg" placeholder="Type a message" v-model="message"/>
-                <button class="msg_send_btn" type="button" @click="sendMessage"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+              <div class="type_msg full">
+                <div class="input_msg_write">
+                  <input type="text" class="write_msg" placeholder="Type a message" v-model="message"/>
+                  <button class="msg_send_btn" type="button" @click="sendMessage"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                </div>
               </div>
-          </div> -->
           </div>
         </div>
       </div>
       </div>
     </div>
-    </div>
+    <Profil />
   </div>
 </template>
 
 <script>
 import firebase from 'firebase'
 import db from '../firebaseInit'
+import Profil from '../components/Profil'
+
 export default {
   name: 'chat',
+  components: {
+    Profil
+  },
   data () {
     return {
       message: null,
       messages: [],
+      senderSend: [],
       authUser: {},
       profil: [],
       myContact: '',
@@ -128,6 +120,15 @@ export default {
         this.messages = allMessage
       })
     },
+    showSender () {
+      db.collection('chat').where('received', '==', this.bannerName.email).where('sender', '==', this.authUser.email).orderBy('createdAt').onSnapshot((querySnapshot) => {
+        var sender = []
+        querySnapshot.forEach(doc => {
+          sender.push(doc.data())
+        })
+        this.senderSend = sender
+      })
+    },
     logout () {
       firebase.auth().signOut()
         .then(() => {
@@ -144,11 +145,21 @@ export default {
     cobaCoba (e) {
       const empty = document.querySelector('.chat-empty')
       const chat = document.querySelector('.mesgs')
+      const sendMsg = document.querySelector('.type_msg')
+      const sendBody = document.querySelector('.messages')
+      sendBody.style.display = 'flex'
       empty.classList.add('full')
-      chat.classList.toggle('full')
+      chat.classList.remove('full')
+      sendMsg.classList.remove('full')
       this.myContact = e.target.textContent
       this.bannerContact()
       this.showMessage()
+      this.showSender()
+    },
+    openModal () {
+      // e.priventDefault()
+      const showProfil = document.querySelector('.profil')
+      showProfil.classList.toggle('hide')
     },
     bannerContact () {
       for (let i = 0; i < this.profil.length; i++) {
@@ -156,7 +167,6 @@ export default {
           this.bannerName = this.profil[i]
         }
       }
-      // this.chatPersonal()
     },
     chatPersonal () {
       for (let i = 0; i < this.messages.length; i++) {
@@ -225,8 +235,11 @@ export default {
       margin-top: 19px;
     }
     .messages{
-      display: flex;
+      display: none;
       flex-direction: column;
+    }
+    #hide{
+      display: none;
     }
     .contact-name{
       display: flex;
@@ -255,6 +268,10 @@ export default {
       font-size: 20px;
       text-align: center;
       color: #ccc;
+    }
+    .myhistory{
+      width: 100%;
+      background-color: aqua;
     }
     .inbox_msg {
       border: 1px solid #c4c4c4;
@@ -330,25 +347,24 @@ export default {
     .active_chat{ background:#ebebeb;}
 
     .incoming_msg_img {
-      display: inline-block;
+      /* display: inline-block; */
       width: 6%;
+      display: flex;
+      flex-direction: column;
     }
     .received_msg {
       display: inline-block;
-      padding: 0 0 0 10px;
+      /* padding: 0 0 0 10px; */
       vertical-align: top;
-      width: 92%;
+      width: 100%;
     }
     .received_withd_msg p {
       background: #ebebeb none repeat scroll 0 0;
-      border-radius: 3px;
       color: #646464;
       font-size: 14px;
-      /* margin-bottom: 15px; */
-      padding: 5px 10px 5px 12px;
+      padding: 20px;
       width: 100%;
-      /* height: 40px; */
-      /* line-height: 25px; */
+      height: 60px;
       border-radius: 10px;
     }
     .time_date {
@@ -357,36 +373,36 @@ export default {
       font-size: 12px;
       margin: 8px 0 0;
     }
-    .received_withd_msg { width: 57%;}
+    .received_withd_msg { width: 100%;}
     .mesgs {
       float: left;
       padding: 30px 15px 0 25px;
-      width: 60%;
+      width: 100%;
+      height: 550px;
+      overflow-y: scroll;
+      overflow-x: hidden;
     }
     .sent_msg p {
       background: #05728f none repeat scroll 0 0;
-      border-radius: 3px;
       font-size: 14px;
-      /* margin-bottom: 15px; */
       color:#fff;
-      padding: 5px 10px 5px 12px;
+      padding: 20px;
       border-radius: 10px;
-      /* line-height: 25px; */
-      width:100%;
-      /* height: 40px; */
+      /* width:100%; */
+      /* height: 60px; */
     }
     .outgoing_msg{ overflow:hidden; margin:26px 0 26px;}
     .sent_msg {
-      float: right;
-      width: 46%;
+      width: 100%;
     }
     .input_msg_write input {
       background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
       border: medium none;
-      color: #4c4c4c;
-      font-size: 15px;
+      font-size: 19px;
       min-height: 48px;
       width: 100%;
+      color: #fff;
+      padding-left: 10px;
     }
 
     .type_msg {border-top: 1px solid #c4c4c4;position: relative;}
