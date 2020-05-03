@@ -57,13 +57,13 @@
           </div>
           <div class="mesgs full">
               <div class="incoming_msg">
-                <div class="received_msg" >
-                  <div class="sent_msg" v-for="chat in messages" :key="chat.id">
+                <div class="received_msg" v-for="chat in messages" :key="chat.id">
+                  <div :class="[chat.received === authUser.email? 'sent_msg': 'received_withd_msg']">
                     <p>{{chat.message}}</p>
                   </div>
-                  <div class="received_withd_msg" v-for="chat in senderSend" :key="chat.id" >
+                  <!-- <div class="received_withd_msg" v-for="chat in senderSend" :key="chat.id" >
                     <p>{{chat.message}}</p>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -119,23 +119,36 @@ export default {
       this.message = null
     },
     showMessage () {
-      db.collection('chat').where('received', '==', this.authUser.email).where('sender', '==', this.bannerName.email).orderBy('createdAt').onSnapshot((querySnapshot) => {
-        var allMessage = []
-        querySnapshot.forEach(doc => {
-          allMessage.push(doc.data())
+      db.collection('chat').where('sender', '==', this.authUser.email)
+      db.collection('chat').where('received', '==', this.bannerName.email)
+      db.collection('chat').orderBy('createdAt')
+        .onSnapshot((querySnapshot) => {
+          // eslint-disable-next-line prefer-const
+          let allMessage = []
+          querySnapshot.forEach((doc) => {
+            // console.log(doc.data().message)
+            if ((doc.data().received === this.bannerName.email && doc.data().sender ===
+            this.authUser.email && doc.data().message !== null && doc.data().message !== ' ') ||
+            (doc.data().received === this.authUser.email &&
+            doc.data().sender === this.bannerName.email && doc.data().message !== null &&
+            doc.data().message !== ' ')) {
+              allMessage.push(doc.data())
+            }
+            // return allMessage;
+          })
+          this.messages = allMessage
+          // console.log(this.messages);
         })
-        this.messages = allMessage
-      })
     },
-    showSender () {
-      db.collection('chat').where('received', '==', this.bannerName.email).where('sender', '==', this.authUser.email).orderBy('createdAt').onSnapshot((querySnapshot) => {
-        var sender = []
-        querySnapshot.forEach(doc => {
-          sender.push(doc.data())
-        })
-        this.senderSend = sender
-      })
-    },
+    // showSender () {
+    //   db.collection('chat').where('received', '==', this.bannerName.email).where('sender', '==', this.authUser.email).orderBy('createdAt').onSnapshot((querySnapshot) => {
+    //     var sender = []
+    //     querySnapshot.forEach(doc => {
+    //       sender.push(doc.data())
+    //     })
+    //     this.senderSend = sender
+    //   })
+    // },
     logout () {
       firebase.auth().signOut()
       firebase.firestore().collection('users').doc(this.logoutUser)
@@ -167,7 +180,7 @@ export default {
       this.myContact = e.target.textContent
       this.bannerContact()
       this.showMessage()
-      this.showSender()
+      // this.showSender()
     },
     openModal () {
       // e.priventDefault()

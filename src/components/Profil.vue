@@ -22,7 +22,7 @@
         <div class="body-profil">
           <div class="phone">
             <img src="../assets/image/phone.png" alt="">
-            <input type="text" :value="whois[0].phoneNumber">
+            <input type="text" v-model="whois[0].phoneNumber" @keyup.enter="updatePhone">
           </div>
           <div class="location">
             <img src="../assets/image/location.png" alt="">
@@ -103,6 +103,12 @@ export default {
       firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid)
         .update({
           displayName: this.whois[0].displayName
+        })
+    },
+    updatePhone () {
+      firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid)
+        .update({
+          phoneNumber: this.whois[0].phoneNumber
         })
     }
   },
