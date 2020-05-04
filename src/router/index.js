@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+// import Home from '../views/Home.vue'
 import Login from '../views/login.vue'
 import Register from '../views/Register.vue'
 import Chatroom from '../views/Chatroom.vue'
@@ -13,8 +13,11 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'chat',
+    component: Chat,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/login',
@@ -37,14 +40,14 @@ const routes = [
     name: 'chatroom',
     component: Chatroom
   },
-  {
-    path: '/chat',
-    name: 'chat',
-    component: Chat,
-    meta: {
-      requiresAuth: true
-    }
-  },
+  // {
+  //   path: '/chat',
+  //   name: 'chat',
+  //   component: Chat,
+  //   meta: {
+  //     requiresAuth: true
+  //   }
+  // }
   // {
   //   path: '/friends',
   //   name: 'FriendsInfo',
@@ -81,7 +84,7 @@ router.beforeEach((to, from, next) => {
   } else if (to.matched.some(record => record.meta.requiresGuest)) {
     if (firebase.auth().currentUser) {
       next({
-        path: '/chat',
+        path: '/',
         query: {
           redirect: to.fullPath
         }

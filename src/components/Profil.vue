@@ -26,7 +26,11 @@
           </div>
           <div class="location">
             <img src="../assets/image/location.png" alt="">
-            <input type="text" value="このはがくれ">
+            <!-- <input type="text" value="このはがくれ"> -->
+            <div class="cordinate">
+              <p>Latitude: {{coordinates.lat}}</p>
+              <p>Longitude: {{coordinates.lng}}</p>
+            </div>
           </div>
         </div>
         <div class="upload-image">
@@ -104,12 +108,14 @@ export default {
         .update({
           displayName: this.whois[0].displayName
         })
+      alert('update sukses')
     },
     updatePhone () {
       firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid)
         .update({
           phoneNumber: this.whois[0].phoneNumber
         })
+      alert('update sukses')
     }
   },
   created () {
@@ -192,7 +198,7 @@ export default {
   }
   .nama p{
     color: #fff;
-    font-weight: bold;
+    /* font-weight: bold; */
   }
   .upload-btn-wrapper {
   position: relative;
@@ -218,7 +224,7 @@ export default {
   margin-left: 20px;
   margin-bottom: 5px;
 }
-.phone input, .location input{
+.phone input, .location p{
   margin-left: 20px;
   margin-top: 5px;
   font-size: 17px;

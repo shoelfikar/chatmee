@@ -35,8 +35,8 @@
                 <div class="firends-name">
                   <h5>{{contact.displayName}}</h5>
                     <div class="noline">
-                      <p v-if="!contact.status">ofline</p>
-                      <p v-else>online</p>
+                      <p v-if="!contact.status" class="offline">ofline</p>
+                      <p v-else class="online">online</p>
                     </div>
                  </div>
               </div>
@@ -69,7 +69,7 @@
             </div>
               <div class="type_msg full">
                 <div class="input_msg_write">
-                  <input type="text" class="write_msg" placeholder="Type a message" v-model="message"/>
+                  <input type="text" class="write_msg" placeholder="Type a message" v-model="message" @keyup.enter="sendMessage"/>
                   <button class="msg_send_btn" type="button" @click="sendMessage"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
                 </div>
               </div>
@@ -183,7 +183,6 @@ export default {
       // this.showSender()
     },
     openModal () {
-      // e.priventDefault()
       const showProfil = document.querySelector('.profil')
       showProfil.classList.toggle('hide')
     },
@@ -235,7 +234,7 @@ export default {
       width: 40%; border-right:1px solid #c4c4c4;
     }
     .chat-contact{
-      height: 600px;
+      height: 617px;
       background-color: #fff;
       overflow-y: scroll;
     }
@@ -267,6 +266,12 @@ export default {
     .messages{
       display: none;
       flex-direction: column;
+    }
+    .offline{
+      color: red;
+    }
+    .online{
+      color: green;
     }
     #hide{
       display: none;

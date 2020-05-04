@@ -56,7 +56,7 @@ export default {
               status: true
             })
           alert(`Success Login With email ${this.email}`)
-          this.$router.push('/chat')
+          this.$router.push('/')
         },
         err => {
           alert(err.message)
