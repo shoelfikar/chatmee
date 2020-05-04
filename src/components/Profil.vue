@@ -86,6 +86,7 @@ export default {
             .update({
               imageProfil: url
             })
+          alert('update sukses')
         })
       }
       )

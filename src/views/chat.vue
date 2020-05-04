@@ -35,8 +35,8 @@
                 <div class="firends-name">
                   <h5>{{contact.displayName}}</h5>
                     <div class="noline">
-                      <p v-if="!contact.status" class="offline">ofline</p>
-                      <p v-else class="online">online</p>
+                      <p v-if="!contact.status" class="offline">Offline</p>
+                      <p v-else class="online">Online</p>
                     </div>
                  </div>
               </div>
@@ -134,21 +134,10 @@ export default {
             doc.data().message !== ' ')) {
               allMessage.push(doc.data())
             }
-            // return allMessage;
           })
           this.messages = allMessage
-          // console.log(this.messages);
         })
     },
-    // showSender () {
-    //   db.collection('chat').where('received', '==', this.bannerName.email).where('sender', '==', this.authUser.email).orderBy('createdAt').onSnapshot((querySnapshot) => {
-    //     var sender = []
-    //     querySnapshot.forEach(doc => {
-    //       sender.push(doc.data())
-    //     })
-    //     this.senderSend = sender
-    //   })
-    // },
     logout () {
       firebase.auth().signOut()
       firebase.firestore().collection('users').doc(this.logoutUser)
@@ -180,7 +169,6 @@ export default {
       this.myContact = e.target.textContent
       this.bannerContact()
       this.showMessage()
-      // this.showSender()
     },
     openModal () {
       const showProfil = document.querySelector('.profil')
