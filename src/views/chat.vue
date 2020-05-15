@@ -139,12 +139,12 @@ export default {
         })
     },
     logout () {
-      firebase.auth().signOut()
       firebase.firestore().collection('users').doc(this.logoutUser)
         .update({
           status: false
         })
         .then(() => {
+          firebase.auth().signOut()
           this.$router.go({ path: this.$router.path })
         })
     },
@@ -205,6 +205,10 @@ export default {
 </script>
 
 <style scoped>
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Rubik:wght@300&display=swap');
+    ::-webkit-input-placeholder {
+      color: #ffffff;
+    }
     .luar{
       background-color: #5580a3;
     }
@@ -214,6 +218,7 @@ export default {
       padding-top: 10px;
       padding-bottom: 10px;
       color: #fff;
+      font-family: 'Dancing Script', cursive;
     }
     .inbox_people {
       background: #f8f8f8 none repeat scroll 0 0;
@@ -447,7 +452,10 @@ export default {
       top: 11px;
       width: 33px;
     }
-    .messaging { padding: 0 0 50px 0;}
+    .messaging {
+      padding: 0 0 50px 0;
+      font-family: 'Rubik', sans-serif;
+    }
     .msg_history {
       height: 516px;
       overflow-y: auto;
