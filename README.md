@@ -48,7 +48,7 @@ chatmee is a Real-Time Chat Web. This app written with Vue Js as front-end, Fire
 
 1. ### Clone this repository
    ```
-   $ git clone https://github.com/ichvanul/ChatApp-VueJs-Firebase.git
+   $ git clone https://github.com/shoelfikar/chatmee-with-Vuejs-Firebase.git
    ```
 2. ### Install all depedencies on the package.json
    ```
