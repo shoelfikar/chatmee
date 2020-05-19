@@ -2,7 +2,6 @@
   <div>
     <div class="luar">
     <div class="container">
-      <!-- <img src="../assets/image/chatMee1.png" alt="" width="130" class="chatmee"> -->
       <h1 class="title">chatMee</h1>
       <div class="messaging">
       <div class="inbox_msg">
@@ -28,7 +27,7 @@
           </div>
           <div class="chat-contact">
             <div class="list-friends" v-for="contact in this.profil" :key="contact.id">
-              <div class="private" @click="cobaCoba" v-if="contact.email !== authUser.email">
+              <div class="private" @click="cobaCoba(contact.displayName)" v-if="contact.email !== authUser.email">
                 <div class="private-image">
                   <img :src="contact.imageProfil" alt="">
                 </div>
@@ -157,7 +156,7 @@ export default {
         this.profil = profilOne
       })
     },
-    cobaCoba (e) {
+    cobaCoba (displayName) {
       const empty = document.querySelector('.chat-empty')
       const chat = document.querySelector('.mesgs')
       const sendMsg = document.querySelector('.type_msg')
@@ -166,7 +165,7 @@ export default {
       empty.classList.add('full')
       chat.classList.remove('full')
       sendMsg.classList.remove('full')
-      this.myContact = e.target.textContent
+      this.myContact = displayName
       this.bannerContact()
       this.showMessage()
     },
