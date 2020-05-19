@@ -1,7 +1,7 @@
 <h1 align="center">
   <br>
-  <img src="https://cdn-images-1.medium.com/fit/t/1600/480/1*wiNrwnAnwjBzbjlXUgrj6A.png" width="300">
-  <img src="https://www.diseprog.com/wp-content/uploads/2019/04/vuejs-logo-333x310.png" width="150" style="margin-top:20px;">
+  <img src="https://cdn-images-1.medium.com/fit/t/1600/480/1*wiNrwnAnwjBzbjlXUgrj6A.png" width="300" height="200">
+  <img src="https://www.diseprog.com/wp-content/uploads/2019/04/vuejs-logo-333x310.png" width="150" height="200" style="margin-top:20px;">
   <br>
   <img src="https://github.com/shoelfikar/chatmee-with-Vuejs-Firebase/blob/master/src/assets/chatmee/chatMee1.png" width="150">
   <br>
