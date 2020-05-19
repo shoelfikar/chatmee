@@ -12,7 +12,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Vue%20Js-v2.6.11-yellow">
-  <img src="https://img.shields.io/badge/Firebase-v7.14.2-ff69b4">
+  <img src="https://img.shields.io/badge/Firebase-v7.14.2-#ffca28">
   <img src="https://img.shields.io/badge/Vue2GoogleMaps-v0.10.7-important">
 </p>
 
