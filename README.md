@@ -5,7 +5,7 @@
   <img src="https://github.com/shoelfikar/chatmee-with-Vuejs-Firebase/blob/master/src/assets/chatmee/chatMee1.png" width="150">
   <img src="https://www.diseprog.com/wp-content/uploads/2019/04/vuejs-logo-333x310.png" width="150" style="margin-top:20px">
   <br>
-  yukChat! Frontend - Vue Js
+  chatmee-with-Vuejs-Firebase
   <br>
 </h1>
 
