@@ -25,7 +25,7 @@
 
 ## Introduction
 
-yukChat! is a Real-Time Chat Web. This app written with Vue Js as front-end, Firebase Firestore as back-end with Cloud Messaging as Push Notification. The main features are:
+chatmee is a Real-Time Chat Web. This app written with Vue Js as front-end, Firebase Firestore as back-end with Cloud Messaging as Push Notification. The main features are:
 
 - Login and Register
 - Real-Time Chat
@@ -34,9 +34,15 @@ yukChat! is a Real-Time Chat Web. This app written with Vue Js as front-end, Fir
 - Maps Marker with Google Maps
 - Logout
 
-## Demo
+## Screenshots
 
-![Screenshot](https://github.com/ichvanul/ChatApp-VueJs-Firebase/blob/master/src/assets/img/chat.jpg)
+<p align='center'>
+  <span>
+    <image width="400" src='https://github.com/shoelfikar/chatmee-with-Vuejs-Firebase/blob/master/src/assets/chatmee/register.png'/>
+    <image width="400" src='https://github.com/shoelfikar/chatmee-with-Vuejs-Firebase/blob/master/src/assets/chatmee/login.png' />
+    <image width="400" src='https://github.com/shoelfikar/chatmee-with-Vuejs-Firebase/blob/master/src/assets/chatmee/chat.png' />
+    <image width="400" src='https://github.com/shoelfikar/chatmee-with-Vuejs-Firebase/blob/master/src/assets/chatmee/profil.png'/>
+    <image width="400" src='https://github.com/shoelfikar/chatmee-with-Vuejs-Firebase/blob/master/src/assets/chatmee/profil%20teman.png'/>
 
 ## How To Install
 
