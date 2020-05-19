@@ -2,7 +2,7 @@
   <br>
   <img src="https://cdn-images-1.medium.com/fit/t/1600/480/1*wiNrwnAnwjBzbjlXUgrj6A.png" width="300">
   <br>
-  <img src="https://github.com/ichvanul/ChatApp-VueJs-Firebase/blob/master/src/assets/img/logo.png" width="150">
+  <img src="https://github.com/shoelfikar/chatmee-with-Vuejs-Firebase/blob/master/src/assets/chatmee/chatMee1.png" width="150">
   <img src="https://www.diseprog.com/wp-content/uploads/2019/04/vuejs-logo-333x310.png" width="155">
   <br>
   yukChat! Frontend - Vue Js
