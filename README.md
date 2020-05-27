@@ -66,4 +66,4 @@ yukChat! is a Real-Time Chat Web. This app written with Vue Js as front-end, Fir
 
 ## Contact
 
-If you want to contact me you can reach me at <ichvanulyp@gmail.com>.
+If you want to contact me you can reach me at <sulfikardi25@gmail.com>.
