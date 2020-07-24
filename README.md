@@ -77,7 +77,7 @@ chatmee is a Real-Time Chat Web. This app written with Vue Js as front-end, Fire
 If you want to contact me you can reach me at <sulfikardi25@gmail.com
 My Email : sulfikardi25@gmail.com
 
-Project Link: [chatmee-with-Vuejs-Firebase](https://github.com/shoelfikar/chatmee-with-Vuejs-Firebase)
+Project Link: [chatmee-with-Vuejs-Firebase](https://chatmee.sulfikardi.my.id)
 
 
 
